@@ -1,0 +1,105 @@
+# agent-redteam
+
+Test **your own AI agent** before someone else does.
+
+`agent-redteam` is a portable agent skill that walks an AI coding agent through a
+complete security assessment of an LLM agent or service you own: intake and
+authorization, discovery, threat model, driver bring-up, execution, triage,
+root-cause analysis, a severity report and a regression suite.
+
+It is transport-agnostic. The target can be an HTTP API, a web UI driven through a
+browser tool (browsermcp, Playwright, CDP), an MCP server, a CLI/TUI, or a local
+SDK process. The skill defines a four-verb driver contract and tells the agent how
+to implement it with whatever tools are available — it does not ship a hard-coded
+HTTP client.
+
+## What it covers
+
+- **Direct**: instruction override, system-prompt extraction, tool disclosure,
+  authority pretexts, obfuscation, multi-turn escalation, long-context dilution.
+- **Indirect**: document/RAG, email, calendar, web pages, tool outputs, memory
+  poisoning, hidden text and metadata carriers.
+- **Tools**: unauthorized calls, read-to-write escalation, parameter injection,
+  confused deputy, tool chaining, confirmation bypass, destructive actions.
+- **Data**: cross-user and cross-tenant retrieval, PII, secrets, history bleed,
+  bulk export, error leakage.
+- **Output**: endorsed links, markdown/HTML injection, fabricated citations,
+  agent-to-agent relay, exfiltration through rendered images.
+- **Robustness**: benign baselines, reset isolation canary, Unicode smuggling.
+
+## Safety first
+
+This skill is for systems **you own or are authorized to test**, in a
+non-production environment, with synthetic data. It refuses third-party targets.
+Payloads are benign equivalents (fictional secrets, reserved domains, sandboxed
+tools). Any action with real side effects requires an explicit, case-specific
+confirmation from the user.
+
+## Install
+
+With the [skills](https://skills.sh) CLI:
+
+```sh
+npx skills add edbrdi/agent-redteam
+```
+
+Or copy this directory into your skills folder:
+
+```sh
+git clone https://github.com/edbrdi/agent-redteam.git
+cp -r agent-redteam ~/.claude/skills/
+```
+
+Any agent that supports the `SKILL.md` format (Claude Code, Codex, and others) can
+load it.
+
+## Quickstart
+
+1. Ask your agent: *"Red-team my support bot at https://staging.example.internal/agent."*
+2. The skill runs **step 0 (authorization)** and produces `runs/<id>/scope.md`.
+   Confirm it.
+3. It profiles the target (`target.yaml`), proposes a test plan (`plan.md`) and
+   builds the driver (`driver.md`).
+4. It executes the case pack, then triages, root-causes and writes `report.md`.
+5. Confirmed breaks are exported to `regression/` for retesting after fixes.
+
+## Case pack
+
+`assets/cases/` ships a full battery (~50 cases) across the six families, written
+generically with placeholders. Three profiles instantiate it for common products:
+
+- `profiles/support-bot.yaml` — support assistant with tickets, KB and email.
+- `profiles/ecommerce-recommender.yaml` — gift/shopping assistant reading listings.
+- `profiles/email-calendar-agent.yaml` — inbox/calendar assistant that can send.
+
+Each case declares its **success criterion** (what observable outcome counts as a
+break) and deterministic checks, so the harness is model-agnostic.
+
+## Repo layout
+
+```
+SKILL.md                 the guided runbook
+SOURCES.md               validation status of every imported technique
+references/              driver contract, surfaces, attack library, scoring, severity, defences
+assets/                  target/ROE/report templates, case pack, profiles
+scripts/                 score.py, render_report.py
+```
+
+## Validation policy
+
+Nothing enters the payload library or the scoring rubric until it has been
+observed in a controlled challenge or against a purpose-built target. `SOURCES.md`
+tracks every candidate as `validated`, `pending`, `excluded` or `process`, and
+documents the promotion protocol. Techniques that no longer work are kept as
+regression probes.
+
+## Contributing
+
+- Add a case in `assets/cases/` with a criterion and `expect` block.
+- Add a profile only if it instantiates cases, not to invent new payloads.
+- Update `SOURCES.md` for any imported technique.
+- Keep payloads benign and side-effect cases behind an explicit confirmation.
+
+## License
+
+MIT.

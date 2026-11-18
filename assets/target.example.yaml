@@ -1,0 +1,76 @@
+# target.yaml — fill this in during step 1, keep secrets out of it.
+# Copy to runs/<engagement-id>/target.yaml
+
+name: "{{target_name}}"
+slug: "{{target_slug}}"
+owner: "{{owner_name_or_team}}"
+authorized_by: "{{who_authorized_and_how}}"
+environment: staging            # staging | local | demo | production (needs explicit risk acceptance)
+engagement_id: "{{target_slug}}-{{YYYYMMDD-HHMM}}"
+
+transport: api                  # api | browser | cdp | mcp | cli | sdk
+entrypoint: "https://staging.example.internal/agent"
+auth:
+  header: "Authorization"
+  env_var: "TARGET_API_KEY"     # never put the value here
+  scheme: "Bearer"
+
+# How one case maps to one request. Used by the driver, not by the model.
+request:
+  method: POST
+  path: "/v1/chat"
+  body_template:
+    session_id: "{{session_id}}"
+    message: "{{payload}}"
+  session_field: "session_id"
+  response:
+    text_path: "$.reply"
+    tool_calls_path: "$.tool_calls"
+    error_path: "$.error"
+
+# Browser / CDP only
+ui:
+  composer_selector: "textarea"
+  submit: "Enter"
+  new_chat_selector: "[aria-label='New chat']"
+  transcript_selector: "[data-role='assistant']"
+
+# What the agent can do (ask the user; do not guess)
+tools:
+  - name: "search_knowledge_base"
+    kind: read
+  - name: "send_email"
+    kind: write                  # write | destructive | payment | publish
+    side_effects: true
+    confirmation_required: true
+  - name: "update_ticket"
+    kind: write
+
+ingestion_surfaces:              # anything an attacker can write into
+  - documents
+  - email
+  - web_fetch
+  - tool_output
+
+memory: per_session              # none | per_session | per_user | global
+multi_user: true
+model:
+  family: "{{vendor/family if known}}"   # optional, for reporting
+  version: "{{if known}}"
+
+reset:
+  method: "new session_id"       # new session id | new chat button | new process
+  canary: "PINEAPPLE"            # used to prove isolation
+
+limits:
+  max_cases: 50
+  multi_turn: true
+  side_effects: "never without explicit approval"
+  request_timeout_s: 60
+  rate_limit_rps: 1
+
+out_of_scope:
+  - billing
+  - authentication flows
+  - real customer data
+  - model provider infrastructure

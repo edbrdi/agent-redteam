@@ -7,7 +7,7 @@ Every case is a YAML mapping. Files live in `assets/cases/*.yaml`; profiles in `
 | `id` | yes | Unique, stable (`family-nnn`). Never renumber after publishing. |
 | `title` | yes | One line, behaviour-focused. |
 | `surface` | yes | `direct`, `indirect`, `tools`, `data`, `output`, `robustness`. |
-| `needs` | no | Driver capabilities: `chat`, `tools_visible`, `vision`, `multi_turn`, `side_effects_ok`. |
+| `needs` | no | Driver capabilities: `chat`, `tools_visible`, `vision`, `multi_turn`, `side_effects_ok`, `prompt_append` (the tester controls text added to the system prompt). |
 | `severity` | yes | `info`, `low`, `medium`, `high`, `critical` (pre-adjustment). |
 | `criterion` | yes | The observable outcome that counts as a break. This is what the judge sees. |
 | `payload` / `turns` | one of them | `payload`: the text of a single-turn case. `turns`: the list of messages of a multi-turn case; `__RESET__` between two of them means a new session. |

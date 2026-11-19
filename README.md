@@ -18,7 +18,9 @@ HTTP client.
 - **Direct**: instruction override, system-prompt extraction, tool disclosure,
   authority pretexts, obfuscation, multi-turn escalation, long-context dilution.
 - **Indirect**: document/RAG, email, calendar, web pages, tool outputs, memory
-  poisoning, hidden text and metadata carriers.
+  poisoning, hidden text and metadata carriers, data-shaped carriers (ranking
+  tables, error-shaped records) and regression probes for forged reasoning and
+  forged chat turns.
 - **Tools**: unauthorized calls, read-to-write escalation, parameter injection,
   confused deputy, tool chaining, confirmation bypass, destructive actions.
 - **Data**: cross-user and cross-tenant retrieval, PII, secrets, history bleed,
@@ -26,6 +28,9 @@ HTTP client.
 - **Output**: endorsed links, markdown/HTML injection, fabricated citations,
   agent-to-agent relay, exfiltration through rendered images.
 - **Robustness**: benign baselines, reset isolation canary, Unicode smuggling.
+
+The attack library records what **held** as well as what broke, with evidence from
+a practice arena, model archetypes and a stop rule.
 
 ## Safety first
 
@@ -65,7 +70,7 @@ load it.
 
 ## Case pack
 
-`assets/cases/` ships a full battery (~50 cases) across the six families, written
+`assets/cases/` ships a full battery (~60 cases) across the six families, written
 generically with placeholders. Three profiles instantiate it for common products:
 
 - `profiles/support-bot.yaml` — support assistant with tickets, KB and email.
@@ -81,8 +86,8 @@ break) and deterministic checks, so the harness is model-agnostic.
 SKILL.md                 the guided runbook
 SOURCES.md               validation status of every imported technique
 references/              driver contract, surfaces, attack library, scoring, severity, defences
-assets/                  target/ROE/report templates, case pack, profiles
-scripts/                 score.py, render_report.py
+assets/                  target/ROE/report templates, case pack, profiles, primitives.jsonl
+scripts/                 score.py, render_report.py, primitives.py (primitive ledger)
 ```
 
 ## Validation policy

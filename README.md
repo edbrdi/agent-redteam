@@ -63,14 +63,16 @@ load it.
 1. Ask your agent: *"Red-team my support bot at https://staging.example.internal/agent."*
 2. The skill runs **step 0 (authorization)** and produces `runs/<id>/scope.md`.
    Confirm it.
-3. It profiles the target (`target.yaml`), proposes a test plan (`plan.md`) and
-   builds the driver (`driver.md`).
+3. It profiles the target (`target.yaml`) and its likely defender, asks the primitive
+   ledger which levers are worth trying (`scripts/primitives.py suggest`), proposes a
+   test plan (`plan.md`) and builds the driver (`driver.md`).
 4. It executes the case pack, then triages, root-causes and writes `report.md`.
-5. Confirmed breaks are exported to `regression/` for retesting after fixes.
+5. Confirmed breaks are exported to `regression/` for retesting after fixes, and the
+   ledger is updated with what held and what broke.
 
 ## Case pack
 
-`assets/cases/` ships a full battery (~60 cases) across the six families, written
+`assets/cases/` ships a full battery (61 cases) across the six families, written
 generically with placeholders. Three profiles instantiate it for common products:
 
 - `profiles/support-bot.yaml` — support assistant with tickets, KB and email.
@@ -79,6 +81,27 @@ generically with placeholders. Three profiles instantiate it for common products
 
 Each case declares its **success criterion** (what observable outcome counts as a
 break) and deterministic checks, so the harness is model-agnostic.
+
+## Primitive ledger
+
+`assets/primitives.jsonl` records attack **primitives**, not prompts: for each one the
+surface, the mechanism, the success condition, the defender profiles it bypassed or
+that held (`detector-armed`, `rule-armed`, `hard-rule`, `identity-bound`,
+`field-ignoring`, `masked-field`, `topic-allowlist`, `permissive`, `unfiltered-host`),
+the failing layer, trials and breaks, a status (`works`, `situational`, `dead`,
+`untested`) and the regression case that exercises it.
+
+```sh
+python3 scripts/primitives.py report                                   # table by status
+python3 scripts/primitives.py suggest --surface indirect --defender detector-armed
+python3 scripts/primitives.py record P01 --trials 2 --breaks 1 --bypassed permissive
+python3 scripts/primitives.py add --json '{...}'                       # validated
+python3 scripts/primitives.py validate
+```
+
+Dead primitives stay in the ledger: they are regression probes and stop the next
+audit from repeating them. Counts are one operator's tendencies on anonymised
+models, not statistics.
 
 ## Repo layout
 
@@ -100,7 +123,10 @@ regression probes.
 
 ## Contributing
 
-- Add a case in `assets/cases/` with a criterion and `expect` block.
+- Add a case in `assets/cases/` with a criterion and `expect` block, and link it from
+  the matching ledger entry (`regression_case`).
+- Record every technique you try in the ledger (`primitives.py record` / `add`), including
+  the ones that failed: store the *shape* of the lever, not its exact wording.
 - Add a profile only if it instantiates cases, not to invent new payloads.
 - Update `SOURCES.md` for any imported technique.
 - Keep payloads benign and side-effect cases behind an explicit confirmation.

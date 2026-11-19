@@ -13,6 +13,9 @@ SDK process. The skill defines a four-verb driver contract and tells the agent h
 to implement it with whatever tools are available — it does not ship a hard-coded
 HTTP client.
 
+New here? Follow the **[step-by-step guide](guide/README.md)**: the techniques from the
+simplest to the most involved, and how to test each one on your own agent.
+
 ## What it covers
 
 - **Direct**: instruction override, system-prompt extraction, tool disclosure,
@@ -107,6 +110,7 @@ models, not statistics.
 
 ```
 SKILL.md                 the guided runbook
+guide/                   step-by-step walkthrough, simplest to most involved
 SOURCES.md               validation status of every imported technique
 references/              driver contract, surfaces, attack library, scoring, severity, defences
 assets/                  target/ROE/report templates, case pack, profiles, primitives.jsonl

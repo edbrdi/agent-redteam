@@ -29,6 +29,9 @@ A report with confirmed findings by root-cause layer, a ledger that records what
 - Treating counts as statistics: they are one operator's tendencies on a few models.
 - Confusing a hold at one depth with safety; say what depth was tested.
 - Mutating a failed payload endlessly.
+- Concluding from one trial on one model ("does not transfer"): write "held on <model>" until three trials.
+- Deepening on one model before a sweep: run one cheap case per model first; neither transfer direction is established.
+- Resetting after a partial compliance: a wrong value or a text-only call is a reason to follow up in the same session, not to start over.
 
 ## Go further
 

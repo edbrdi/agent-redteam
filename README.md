@@ -75,7 +75,7 @@ load it.
 
 ## Case pack
 
-`assets/cases/` ships a full battery (61 cases) across the six families, written
+`assets/cases/` ships a full battery (65 cases) across the six families, written
 generically with placeholders. Three profiles instantiate it for common products:
 
 - `profiles/support-bot.yaml` — support assistant with tickets, KB and email.

@@ -17,6 +17,8 @@ Remediations grouped by the root-cause layer. Prefer fixes that hold even if the
 - Allowlist tools per intent; deny destructive defaults.
 - High-impact actions (pay, send, delete, publish, move files) require a machine-verifiable confirmation token issued by the user turn, not a sentence the model can write.
 - Validate arguments server-side: recipient allowlists, amount caps, id ownership checks, type checks.
+- A ban written only in the system prompt ("never call X", "always check Y first") is not a control: models emitted the banned call when asked for its "exact syntax", and skipped a mandatory pre-check when its own check silently failed. Remove the tool from the allowlist, or enforce the precondition in the tool.
+- What held in testing were value checks in code or in a rewrite rule (typed ids, caps checked against session state, weak inputs replaced): put limits on values where the model cannot talk around them.
 - Make idempotent/dry-run modes explicit and actually read-only.
 - Log every tool call with the triggering message id and the authorisation source.
 

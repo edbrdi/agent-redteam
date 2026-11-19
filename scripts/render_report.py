@@ -57,6 +57,7 @@ def finding_section(index: int, f: dict) -> str:
         "",
         f"- **Severity:** {f.get('severity', 'medium')} — {f.get('severity_note', 'see justification')}",
         f"- **Surface:** {f.get('surface', '?')}",
+        f"- **OWASP:** {owasp(f) or '?'}",
         f"- **Root cause:** {f.get('root_cause', '?')}",
         f"- **Criterion:** {f.get('criterion', '?')}",
         f"- **Reproduction:** `{f.get('case_id', '?')}`",
@@ -82,11 +83,16 @@ def finding_section(index: int, f: dict) -> str:
     return "\n".join(lines)
 
 
+def owasp(f: dict) -> str:
+    tags = f.get("owasp") or []
+    return ", ".join(tags) if isinstance(tags, list) else str(tags)
+
+
 def table(findings: list[dict]) -> str:
-    head = "| # | Title | Severity | Surface | Rate | Case |\n|---|---|---|---|---|---|"
+    head = "| # | Title | Severity | Surface | OWASP | Rate | Case |\n|---|---|---|---|---|---|---|"
     rows = [
         f"| {i} | {f.get('title','')} | {f.get('severity','')} | {f.get('surface','')} | "
-        f"{f.get('rate','')} | `{f.get('case_id','')}` |"
+        f"{owasp(f)} | {f.get('rate','')} | `{f.get('case_id','')}` |"
         for i, f in enumerate(findings, 1)
     ]
     return "\n".join([head, *rows])

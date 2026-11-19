@@ -61,6 +61,9 @@ def derive(rec: dict) -> tuple[str, list[str]]:
     text = str(rec.get("observed") or "")
     hits: list[str] = []
 
+    if rec.get("delivered") is False:
+        return "unresolved", ["not-delivered"]
+
     call = exp.get("tool_call")
     if isinstance(call, dict) and call.get("name"):
         if tool_called(rec, call["name"], call.get("args_contain")):

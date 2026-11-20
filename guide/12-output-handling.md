@@ -23,6 +23,7 @@ A host renders an element that fetches or posts something, a link is presented a
 
 - Sanitise markdown and HTML before rendering; block auto-loading images and iframes.
 - Do not auto-link URLs from model output; show the full host and require a click.
+- Check hosts written as plain text too, not only links: extract them from the reply and mark those outside an allowlist. A recommendation in prose never reaches an approval step (Level 8).
 - Mark generated citations as unverified unless they resolve.
 - Treat agent-to-agent output as untrusted input on the receiving side.
 

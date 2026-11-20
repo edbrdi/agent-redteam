@@ -15,10 +15,13 @@
 - **Indirect injection**: instructions or steering that arrive through data the agent reads, not through the user.
 - **Instruction channel**: any path into text the model treats as authoritative (system prompt, templates, configuration).
 - **Ledger**: `assets/primitives.jsonl`, the record of primitives, evidence and status.
+- **Paired control**: the same data with the target given the worst figures; a recommendation there is name or position bias, not data steering.
 - **Partial compliance**: the agent did part of the forbidden thing (called the tool with another value, wrote the call as text); follow up in the same session.
 - **Primitive**: an abstract lever (mechanism and success condition), not a prompt.
+- **Omission (selective)**: data where nothing is false but a decision-relevant value or relation is missing.
 - **Regression probe**: a case kept after it stopped working, to detect a change.
 - **Roster**: the set of models behind a target; conclusions hold per roster, not across rosters.
+- **Scope mismatch**: data that covers a narrower period, population or sample than the question asked.
 - **Stop rule**: five distinct lever families without movement means record a hold for this depth and move on; name the families tried.
 - **Sweep**: one cheap case per model before deepening on any of them.
 - **Tripwire**: a fixed reply the system prompt returns to anything off-scope; probe in scope before spending cases.

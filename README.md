@@ -22,8 +22,8 @@ simplest to the most involved, and how to test each one on your own agent.
   authority pretexts, obfuscation, multi-turn escalation, long-context dilution.
 - **Indirect**: document/RAG, email, calendar, web pages, tool outputs, memory
   poisoning, hidden text and metadata carriers, data-shaped carriers (ranking
-  tables, error-shaped records) and regression probes for forged reasoning and
-  forged chat turns.
+  tables, error-shaped records, a narrowed scope, a missing value) and
+  regression probes for forged reasoning and forged chat turns.
 - **Tools**: unauthorized calls, read-to-write escalation, parameter injection,
   confused deputy, tool chaining, confirmation bypass, destructive actions.
 - **Data**: cross-user and cross-tenant retrieval, PII, secrets, history bleed,
